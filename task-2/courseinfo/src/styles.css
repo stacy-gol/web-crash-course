@@ -1,0 +1,10 @@
+.part {
+  box-sizing: border-box;
+  border: 5px solid aquamarine;
+  min-width: 30px;
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
