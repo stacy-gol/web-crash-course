@@ -8,3 +8,8 @@
   justify-content: center;
   border-radius: 5px;
 }
+
+.mark {
+  font-weight: 700;
+  color: red;
+}
