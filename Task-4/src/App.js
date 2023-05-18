@@ -1,10 +1,5 @@
 import { useState } from 'react'
 
-const StatisticLine  = (props) => (
-  <div>
-    {props.text} {props.value}
-  </div>
-)
 
 const Button = (props) => (
   <button onClick={props.onClick}>
@@ -13,26 +8,32 @@ const Button = (props) => (
 )
 
 const Statistics = (props) => {
-  if (props.buttonClicked === false) 
+  if (props.buttonClicked === false) {
     return (
       <div>
         No feedback given
       </div>
     )
-  else {
+  } else {
     return (
-  <div>
-    <h1>Statistics</h1>
-      <StatisticLine text="good" value={props.good} />
-      <StatisticLine text="neutral" value={props.neutral} />
-      <StatisticLine text="bad" value={props.bad} />
-      <StatisticLine text="total" value={props.positive} />
-      <StatisticLine text="average" value={props.average} />
-      <StatisticLine text="positive" value={props.positive} />
-  </div>
-  )}
+      <div>
+        <h1>Statistics</h1>
+        <table>
+      <tbody>
+        {props.data.map((item, index) => (
+          <tr key={index}>
+            <td>{item.text}</td>
+            <td>{item.value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+      </div>
+    )
   }
-  
+}
+
+
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -42,6 +43,14 @@ const App = () => {
   const [average, setAverage] = useState(0)
   const [positive, setPositive] = useState(0)
   const [buttonClicked, setButtonClicked] = useState(false)
+  const data = [
+    { text: "good", value: good },
+    { text: "neutral", value: neutral },
+    { text: "bad", value: bad },
+    { text: "total", value: total },
+    { text: "average", value: average },
+    { text: "positive", value: positive },
+  ];
 
 
   const handleGoodClick = () => {
@@ -85,7 +94,7 @@ const App = () => {
       <Button onClick={handleBadClick}>bad</Button>
       {bad}
       {!buttonClicked && <h2>No feedback given</h2>}
-      {buttonClicked && <Statistics good={good} neutral={neutral} bad={bad} total={total} average={average} positive={positive}/>
+      {buttonClicked && <Statistics data={data} />
       }
     </div>
   )
