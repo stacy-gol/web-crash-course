@@ -33,7 +33,16 @@ const Statistics = (props) => {
   }
 }
 
-
+const anecdotes = [
+  'If it hurts, do it more often.',
+  'Adding manpower to a late software project makes it later!',
+  'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+  'Premature optimization is the root of all evil.',
+  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+  'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+  'The only way to go fast, is to go well.'
+]
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -43,6 +52,9 @@ const App = () => {
   const [average, setAverage] = useState(0)
   const [positive, setPositive] = useState(0)
   const [buttonClicked, setButtonClicked] = useState(false)
+  const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
+  const [maxVoteIndex, setMaxVoteIndex] = useState(0)
   const data = [
     { text: "good", value: good },
     { text: "neutral", value: neutral },
@@ -51,24 +63,7 @@ const App = () => {
     { text: "average", value: average },
     { text: "positive", value: positive },
   ];
-  const anecdotes = [
-    'If it hurts, do it more often.',
-    'Adding manpower to a late software project makes it later!',
-    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-    'Premature optimization is the root of all evil.',
-    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
-    'The only way to go fast, is to go well.'
-  ]
-  const [selected, setSelected] = useState(0)
-   
-  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0));
-  const copy = [...points]
-  const [maxVoteIndex, setMaxVoteIndex] = useState(0)
-
-
-
+  
   const handleGoodClick = () => {
     const updatedGood = good + 1
     setGood(updatedGood)
@@ -103,9 +98,10 @@ const App = () => {
   const selected = Math.floor(Math.random() * anecdotes.length)
   setSelected(selected)
   }
-  console.log('selected', selected)
+ 
 
   const voteForAnecdote = () => {
+  const copy = [...points]
   const indexSelected = selected;
   copy[indexSelected]++;
   setPoints(copy)
@@ -113,8 +109,6 @@ const App = () => {
   const indexMax = copy.findIndex((element) => element === maxVotes)
   setMaxVoteIndex(indexMax)
   }
-
-
 
   return (
     <div>
@@ -125,9 +119,7 @@ const App = () => {
       {neutral}
       <Button onClick={handleBadClick}>bad</Button>
       {bad}
-      {!buttonClicked && <h2>no feedback given</h2>}
-      {buttonClicked && <Statistics data={data} />
-      }
+      <Statistics data={data} buttonClicked={buttonClicked} />
       <h2>anecdote of the day</h2>
       {anecdotes[selected]}
       <Button onClick={chooseAnecdote}>next anecdote</Button>
