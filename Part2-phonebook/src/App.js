@@ -3,12 +3,16 @@ import Name from './components/Name'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '9999999' }
-  ]) 
-  
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [personSearched, setSearch] =  useState('')
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
+  ])
+  
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -33,9 +37,18 @@ const App = () => {
     setNewPhone(event.target.value)
   }
 
+  const handleSearch = (event) => {
+    setSearch(event.target.value)
+  }
+
+  const personsToShow = personSearched === ''
+    ? persons
+    : persons.filter((person) => person.name.includes(personSearched))
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <input value={personSearched} onChange={handleSearch}></input>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameAdding}/>
@@ -48,8 +61,9 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-      {persons.map(person =>
-        <Name key={person.name} name={person.name} phone={person.phone}/>)}
+      {personsToShow.map(person =>
+        <Name key={person.id} 
+        name={person.name} phone={person.phone}/>)}
       </ul>
     </div>
     
