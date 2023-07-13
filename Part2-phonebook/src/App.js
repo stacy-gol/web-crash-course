@@ -12,15 +12,12 @@ const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
 
   const addPerson = (event) => {
@@ -33,9 +30,14 @@ const App = () => {
       name: newName,
       phone: newPhone
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewPhone('')
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewPhone('')
+      })
+
   }
 
   const handleNameAdding = (event) => {
@@ -58,9 +60,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter personSearched={personSearched} handleSearch={handleSearch}/>
-      <PersonForm addPerson={addPerson} newName={newName} handleNameAdding={handleNameAdding} 
-      newPhone={newPhone} handlePhoneAdding={handlePhoneAdding} />
+      <Filter personSearched={personSearched} handleSearch={handleSearch} />
+      <PersonForm addPerson={addPerson} newName={newName} handleNameAdding={handleNameAdding}
+        newPhone={newPhone} handlePhoneAdding={handlePhoneAdding} />
       <h2>Numbers</h2>
       <Persons personsToShow={personsToShow} />
     </div>
