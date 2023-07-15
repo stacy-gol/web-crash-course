@@ -1,5 +1,11 @@
-const Name = ({ name, phone }) => {
-  return <li>{name} {phone}</li>;
-};
-  
+const Name = ({ name, phone, deletePerson }) => {
+  return (
+    <li>
+      {name}
+      {phone}
+      <button onClick={deletePerson}>Delete</button>
+    </li>
+  )
+}
+
 export default Name
