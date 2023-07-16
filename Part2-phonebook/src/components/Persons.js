@@ -1,7 +1,6 @@
 import Name from './Name'
 
 const Persons = ({ personsToShow, deletePerson }) => {
-    console.log('personsToShow', personsToShow)
     return (
         <ul>
             {personsToShow.map(person =>

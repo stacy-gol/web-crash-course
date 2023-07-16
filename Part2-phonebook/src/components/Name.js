@@ -1,8 +1,8 @@
 const Name = ({ name, phone, deletePerson }) => {
   return (
     <li>
-      {name}
-      {phone}
+      {name}: {' '}
+      <b>{phone}</b>{' '}
       <button onClick={deletePerson}>Delete</button>
     </li>
   )
