@@ -1,8 +1,8 @@
-const Name = ({ name, phone, deletePerson }) => {
+const Name = ({ name, number, deletePerson }) => {
   return (
     <li>
       {name}: {' '}
-      <b>{phone}</b>{' '}
+      <b>{number}</b>{' '}
       <button onClick={deletePerson}>Delete</button>
     </li>
   )
