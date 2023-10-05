@@ -12,7 +12,7 @@ import SuccessMessage from './components/SuccessMessage'
 
 const App = () => {
   const [newName, setNewName] = useState('')
-  const [newPhone, setNewPhone] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [personSearched, setSearch] = useState('')
   const [persons, setPersons] = useState([])
   const [greenMessage, setGreenMessage] = useState(null)
@@ -30,20 +30,17 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     const originalPerson = persons.find(n => n.name === newName)
-  console.log('add person', persons, newName, originalPerson);
 
     if (originalPerson) {
       const dublicateCheck =
         window.confirm(`${newName} is already added to the phonebook, replace the old number with the new one?`);
       if (dublicateCheck === true) {
-        console.log('request');
         personService
-          .update(originalPerson.id, { ...originalPerson, phone: newPhone })
+          .update(originalPerson.id, { ...originalPerson, number: newNumber })
           .then((returnedPerson) => {
-            console.log('returnedPerson', returnedPerson)
             setPersons(personsToShow.map(person => person.name !== newName ? person : returnedPerson))
             setNewName('')
-            setNewPhone('')
+            setNewNumber('')
             setGreenMessage(`Phone was updated!`)
             setTimeout(() => {
             setGreenMessage(null)
@@ -56,19 +53,19 @@ const App = () => {
               setRedMessage(null)
             }, 5000)
             setNewName('')
-            setNewPhone('')
+            setNewNumber('')
           })
       }
       else {
         setPersons(personsToShow)
         setNewName('')
-        setNewPhone('')
+        setNewNumber('')
       }
     } else {
 
       const newPerson = {
         name: newName,
-        phone: newPhone
+        number: newNumber
       }
       personService
         .create(newPerson)
@@ -76,11 +73,20 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setGreenMessage(`Added ${newName}`)
           setNewName('')
-          setNewPhone('')
+          setNewNumber('')
           setTimeout(() => {
             setGreenMessage(null)
           }, 5000)
         })
+        .catch(error => {setRedMessage(
+          `Ошибка в создании пользователя: ${error.response.data.error}`
+        )
+        setTimeout(() => {
+          setRedMessage(null)
+        }, 5000)
+        setNewName('')
+        setNewNumber('')
+      })
 
     }
   }
@@ -89,8 +95,8 @@ const App = () => {
     setNewName(event.target.value)
   }
 
-  const handlePhoneAdding = (event) => {
-    setNewPhone(event.target.value)
+  const handleNumberAdding = (event) => {
+    setNewNumber(event.target.value)
   }
 
   const handleSearch = (event) => {
@@ -119,7 +125,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phonebook V1.1</h2>
       <SuccessMessage message={greenMessage}></SuccessMessage>
       <FailMessage message={redMessage}></FailMessage>
       <p>filter with:</p>
@@ -131,8 +137,8 @@ const App = () => {
           addPerson={addPerson}
           newName={newName}
           handleNameAdding={handleNameAdding}
-          newPhone={newPhone}
-          handlePhoneAdding={handlePhoneAdding} />
+          newNumber={newNumber}
+          handleNumberAdding={handleNumberAdding} />
       </div>
       <h2>Numbers</h2>
       <Persons
